@@ -29,7 +29,7 @@ def agg_metrics(df_input, date_col, cols_to_agg, groupby_cols):
 
 
 
-df = pd.read_csv('https://raw.githubusercontent.com/tzidar/tz_oura_flask/4242820e909833ab34ff74ae627a3dd0b01498b7/data/sleep_data_2022_12_03.csv')
+df = pd.read_csv('https://raw.githubusercontent.com/tzidar/tom_streamlit_oura/main/sleep_data_2022_12_17.csv')
 df = df.drop(columns=['Unnamed: 0'])
 print(df.columns)
 df['rem_hours'] = df['rem'] / 60 / 60
@@ -40,11 +40,11 @@ df_weekly_snapshot['lag_50%_1'] = df_weekly_snapshot['50%'].shift(-1)
 df_weekly_snapshot['pct_change'] = (df_weekly_snapshot['50%']-df_weekly_snapshot['lag_50%_1'])/df_weekly_snapshot['lag_50%_1']
 df_last_period = df_weekly_snapshot.loc[lambda df: df.temporal_rank ==1 ]
 
-hr_pct_wow = round(df_last_period.loc[lambda x: x['agg_metric'] == 'hr_average'][['pct_change']].iloc[0].values[0],2)*100
+hr_pct_wow = round(df_last_period.loc[lambda x: x['agg_metric'] == 'hr_average'][['pct_change']].iloc[0].values[0]*100,2)
 median_hr = round(df_last_period.loc[lambda x: x['agg_metric'] == 'hr_average'][['50%']].iloc[0].values[0],2)
-rem_pct_wow = round(df_last_period.loc[lambda x: x['agg_metric'] == 'rem_hours'][['pct_change']].iloc[0].values[0],2)*100
+rem_pct_wow = round(df_last_period.loc[lambda x: x['agg_metric'] == 'rem_hours'][['pct_change']].iloc[0].values[0]*100,2)
 median_rem = round(df_last_period.loc[lambda x: x['agg_metric'] == 'rem_hours'][['50%']].iloc[0].values[0],2)
-wu_pct_wow = round(df_last_period.loc[lambda x: x['agg_metric'] == 'wake_up_count'][['pct_change']].iloc[0].values[0],2)*100
+wu_pct_wow = round(df_last_period.loc[lambda x: x['agg_metric'] == 'wake_up_count'][['pct_change']].iloc[0].values[0]*100,2)
 median_wu = round(df_last_period.loc[lambda x: x['agg_metric'] == 'wake_up_count'][['50%']].iloc[0].values[0],2)
 
 df_wakeups = df_weekly_snapshot.loc[lambda x: x['agg_metric'] == 'wake_up_count']
